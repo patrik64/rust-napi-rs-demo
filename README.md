@@ -88,7 +88,7 @@ Cross-Origin-Embedder-Policy: require-corp
 Also required in a pnpm monorepo: `server.fs.allow` must include the workspace
 root so Vite may serve the loader files from `../native`.
 
-## Version pinning (do not bump blindly)
+## Version pinning  
 
 The npm and cargo halves of the WASM toolchain must come from the same
 generation. As of July 2026 the stable, mutually compatible set used here:
