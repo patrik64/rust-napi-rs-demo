@@ -1,0 +1,17 @@
+node_modules/
+target/
+.svelte-kit/
+build/
+dist/
+
+# napi-rs build artifacts (regenerate with pnpm build:native / build:wasm)
+native/*.node
+native/*.wasm
+native/index.js
+native/index.d.ts
+native/browser.js
+native/*.wasi.cjs
+native/*.wasi-browser.js
+native/wasi-worker*.mjs
+
+.DS_Store

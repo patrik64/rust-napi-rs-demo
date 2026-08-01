@@ -1,0 +1,11 @@
+{
+  "name": "napi-rs-showcase",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter app dev",
+    "build": "pnpm build:native && pnpm build:wasm && pnpm --filter app build",
+    "build:native": "pnpm --filter @demo/rust build",
+    "build:wasm": "pnpm --filter @demo/rust build:wasm",
+    "preview": "pnpm --filter app preview"
+  }
+}

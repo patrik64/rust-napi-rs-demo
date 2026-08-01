@@ -1,0 +1,39 @@
+{
+  "name": "@demo/rust",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "types": "index.d.ts",
+  "browser": "browser.js",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./wasm": {
+      "types": "./index.d.ts",
+      "default": "./demo.wasi-browser.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "napi": {
+    "binaryName": "demo",
+    "targets": [
+      "aarch64-apple-darwin",
+      "wasm32-wasip1-threads"
+    ]
+  },
+  "scripts": {
+    "build": "napi build --platform --release",
+    "build:debug": "napi build --platform",
+    "build:wasm": "napi build --platform --release --target wasm32-wasip1-threads"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "3.7.3"
+  },
+  "dependencies": {
+    "@emnapi/core": "^1.7.1",
+    "@emnapi/runtime": "^1.7.1",
+    "@napi-rs/wasm-runtime": "1.1.6"
+  }
+}
