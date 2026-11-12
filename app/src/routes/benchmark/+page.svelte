@@ -80,11 +80,8 @@
 <div class="card controls">
 	<label>
 		<span class="field-label">n = {n}</span>
-		<input type="range" min="25" max="40" bind:value={n} disabled={running} />
+		<input type="range" min="25" max="42" bind:value={n} disabled={running} />
 	</label>
-	{#if n >= 38}
-		<span class="chip">⚠️ JavaScript will take several seconds at n = {n}</span>
-	{/if}
 	<div class="buttons">
 		<button class="btn primary" onclick={() => runBench(ENGINE_ORDER)} disabled={running}>
 			{running ? 'Running…' : 'Run all engines'}

@@ -1,4 +1,0 @@
-# napi's async->Promise support on WASM needs tokio's unstable (cfg-gated)
-# APIs; newer napi-build versions set this flag themselves, 2.3.2 does not.
-[target.wasm32-wasip1-threads]
-rustflags = ["--cfg", "tokio_unstable"]
