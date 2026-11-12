@@ -43,8 +43,8 @@ Production: `pnpm build && pnpm preview` (serves via `app/server.mjs`).
 ## The demo pages (suggested talk flow)
 
 1. **Overview** — `greet()` runs twice: once natively during SSR, once as WASM
-   after hydration. Then the event-loop demo: blocking `fibonacci(40)` freezes
-   a rAF-driven dot; `await fibonacciAsync(40)` (Rust `AsyncTask` → JS Promise,
+   after hydration. Then the event-loop demo: blocking `fibonacci(42)` freezes
+   a rAF-driven dot; `await fibonacciAsync(42)` (Rust `AsyncTask` → JS Promise,
    computed on a worker thread) keeps it moving.
 2. **Benchmark** — the same naive fibonacci in 4 engines: browser JS, browser
    WASM, server JS, server native. Typical result on an M-series MacBook at

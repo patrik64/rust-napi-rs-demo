@@ -357,12 +357,12 @@
 	<h2>AsyncTask → Promise, threads included</h2>
 	<div class="cols">
 		<div class="card">
-			<p><strong>Blocking</strong> <code>fibonacci(40)</code></p>
-			<p>362 ms on the main thread —<br />the rAF-driven dot <strong>freezes</strong>.</p>
+			<p><strong>Blocking</strong> <code>fibonacci(42)</code></p>
+			<p>910 ms on the main thread —<br />the rAF-driven dot <strong>freezes</strong>.</p>
 		</div>
 		<div class="card">
-			<p><strong><code>await fibonacciAsync(40)</code></strong></p>
-			<p>403 ms on a <strong>WASM worker thread</strong> —<br />the UI never stops. Same Rust, in the browser.</p>
+			<p><strong><code>await fibonacciAsync(42)</code></strong></p>
+			<p>926 ms on a <strong>WASM worker thread</strong> —<br />the UI never stops. Same Rust, in the browser.</p>
 		</div>
 	</div>
 	<p style="margin-top: 2rem">

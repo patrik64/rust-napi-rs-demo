@@ -42,8 +42,8 @@
 		// Give the UI one frame to paint, then block the main thread.
 		await new Promise((r) => setTimeout(r, 50));
 		const start = performance.now();
-		const value = rust.fibonacci(40);
-		syncResult = `fib(40) = ${value} in ${(performance.now() - start).toFixed(0)} ms — the dot froze`;
+		const value = rust.fibonacci(42);
+		syncResult = `fib(42) = ${value} in ${(performance.now() - start).toFixed(0)} ms — the dot froze`;
 		busy = false;
 	}
 
@@ -52,8 +52,8 @@
 		asyncResult = '…';
 		busy = true;
 		const start = performance.now();
-		const value = await rust.fibonacciAsync(40);
-		asyncResult = `fib(40) = ${value} in ${(performance.now() - start).toFixed(0)} ms — the dot kept moving`;
+		const value = await rust.fibonacciAsync(42);
+		asyncResult = `fib(42) = ${value} in ${(performance.now() - start).toFixed(0)} ms — the dot kept moving`;
 		busy = false;
 	}
 </script>
@@ -102,10 +102,10 @@
 	</div>
 	<div class="row">
 		<button class="btn" onclick={runSync} disabled={busy || !wasmReady}>
-			Blocking <code>fibonacci(40)</code>
+			Blocking <code>fibonacci(42)</code>
 		</button>
 		<button class="btn primary" onclick={runAsync} disabled={busy || !wasmReady}>
-			<code>await fibonacciAsync(40)</code>
+			<code>await fibonacciAsync(42)</code>
 		</button>
 	</div>
 	{#if syncResult}<p class="result">sync: {syncResult}</p>{/if}
@@ -114,7 +114,7 @@
 
 <section class="split">
 	<div class="card">
-		<h2>The whole trick</h2>
+		<h2>Rust code</h2>
 		<pre>{`use napi_derive::napi;
 
 #[napi]
