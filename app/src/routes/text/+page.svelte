@@ -1,26 +1,8 @@
 <script lang="ts">
 	import { ENGINES, type EngineId } from '$lib/engines';
 	import { loadWasm, timed } from '$lib/wasm';
-
-	const SAMPLE = `# napi-rs in one slide
-
-Write **Rust**, ship it as:
-
-1. a *native addon* — \`demo.darwin-arm64.node\`
-2. a *WASM module* — \`demo.wasm32-wasi.wasm\`
-
-Same crate, same \`#[napi]\` macros, same TypeScript types.
-
-> The markdown you are reading is parsed by
-> [pulldown-cmark](https://crates.io/crates/pulldown-cmark) —
-> the engine behind rustdoc and mdBook.
-
-\`\`\`rust
-#[napi]
-pub fn render_markdown(input: String) -> String { /* … */ }
-\`\`\`
-
-Type here and watch it re-render on every keystroke.`;
+	// The initial editor content — a copy of the project README.
+	import SAMPLE from '$lib/sample.md?raw';
 
 	type Stats = { chars: number; words: number; lines: number; mostCommonWord: string };
 
@@ -103,12 +85,6 @@ Type here and watch it re-render on every keystroke.`;
 	{/if}
 </div>
 
-<div class="panes">
-	<textarea bind:value={markdown} spellcheck="false" aria-label="Markdown input"></textarea>
-	<!-- Demo-only: renders HTML straight from pulldown-cmark without sanitizing. -->
-	<div class="card rendered">{@html html}</div>
-</div>
-
 {#if stats}
 	<div class="tiles">
 		<div class="card tile">
@@ -129,6 +105,12 @@ Type here and watch it re-render on every keystroke.`;
 		</div>
 	</div>
 {/if}
+
+<div class="panes">
+	<textarea bind:value={markdown} spellcheck="false" aria-label="Markdown input"></textarea>
+	<!-- Demo-only: renders HTML straight from pulldown-cmark without sanitizing. -->
+	<div class="card rendered">{@html html}</div>
+</div>
 
 <style>
 	.intro {
@@ -200,6 +182,7 @@ Type here and watch it re-render on every keystroke.`;
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 		gap: 1rem;
+		margin-bottom: 1rem;
 	}
 
 	.tile .big {
