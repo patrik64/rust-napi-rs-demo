@@ -2,7 +2,9 @@ import { json, error } from '@sveltejs/kit';
 import { renderMarkdown, analyzeText } from '@demo/rust';
 import type { RequestHandler } from './$types';
 
-const MAX_CHARS = 200_000;
+// Generous on purpose: the demo invites pasting huge documents. Production
+// also needs BODY_SIZE_LIMIT large enough for this (see server.mjs).
+const MAX_CHARS = 50_000_000;
 
 // Renders markdown and computes text stats in one call — both are
 // string/object marshaling demos for the native addon.

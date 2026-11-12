@@ -5,7 +5,14 @@
 // is refused in a cross-origin-isolated page — which would break the
 // threaded WASM build. Run with: node server.mjs (after pnpm build).
 import { createServer } from 'node:http';
-import { handler } from './build/handler.js';
+
+// adapter-node caps request bodies at 512K by default — far below what the
+// /api/text (50M chars) and /api/image (20 MB) endpoints accept. The handler
+// reads BODY_SIZE_LIMIT when it is first imported, so set it before a
+// dynamic import (a static import would be evaluated first). An explicit
+// BODY_SIZE_LIMIT in the environment still wins.
+process.env.BODY_SIZE_LIMIT ??= '200M';
+const { handler } = await import('./build/handler.js');
 
 const server = createServer((req, res) => {
 	res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
