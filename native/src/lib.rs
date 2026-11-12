@@ -25,13 +25,32 @@ pub fn fibonacci(n: u32) -> u32 {
     }
 }
 
-/// An `async fn` becomes a function returning a JS `Promise`.
-/// The work runs on a background thread — the event loop stays free.
+/// A `Task` describes work for a background thread: `compute` runs off the
+/// JS thread (libuv's pool natively, a Web Worker in the WASM build),
+/// `resolve` converts the result back on the JS thread.
+pub struct FibonacciTask {
+    n: u32,
+}
+
+#[napi] // lets the TS generator see `JsValue` → `Promise<number>`
+impl Task for FibonacciTask {
+    type Output = u32;
+    type JsValue = u32;
+
+    fn compute(&mut self) -> Result<Self::Output> {
+        Ok(fibonacci(self.n))
+    }
+
+    fn resolve(&mut self, _env: Env, output: Self::Output) -> Result<Self::JsValue> {
+        Ok(output)
+    }
+}
+
+/// Returning an `AsyncTask` makes this a function returning a JS `Promise`
+/// — the event loop stays free while `compute` runs.
 #[napi]
-pub async fn fibonacci_async(n: u32) -> Result<u32> {
-    napi::tokio::task::spawn_blocking(move || fibonacci(n))
-        .await
-        .map_err(|err| Error::from_reason(err.to_string()))
+pub fn fibonacci_async(n: u32) -> AsyncTask<FibonacciTask> {
+    AsyncTask::new(FibonacciTask { n })
 }
 
 /// Structs marked `#[napi(object)]` cross the boundary as plain JS

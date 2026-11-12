@@ -241,7 +241,7 @@
 	<ul>
 		<li>Annotate plain Rust with <code>#[napi]</code> → it becomes a JavaScript export via <strong>Node-API</strong>.</li>
 		<li><strong>TypeScript definitions generated for free</strong> — the same <code>index.d.ts</code> for both targets.</li>
-		<li>v3's headline: <code>napi build --target wasm32-wasip1-threads</code> compiles the <strong>unchanged crate to WASM</strong> — threads, tokio and all.</li>
+		<li>v3's headline: <code>napi build --target wasm32-wasip1-threads</code> compiles the <strong>unchanged crate to WASM</strong> — threads and all.</li>
 		<li>Battle-tested: Rspack, Rolldown, oxc, Prisma, Tailwind v4's Oxide…</li>
 	</ul>
 </section>
@@ -260,7 +260,7 @@
 <span class="k">pub fn</span> fibonacci(n: <span class="k">u32</span>) -&gt; <span class="k">u32</span> { <span class="c">/* … */</span> }
 
 <span class="a">#[napi]</span>
-<span class="k">pub async fn</span> fibonacci_async(n: <span class="k">u32</span>) -&gt; Result&lt;<span class="k">u32</span>&gt; { <span class="c">/* … */</span> }</pre>
+<span class="k">pub fn</span> fibonacci_async(n: <span class="k">u32</span>) -&gt; AsyncTask&lt;FibonacciTask&gt; { <span class="c">/* … */</span> }</pre>
 	<p style="margin-top: 1.5rem">
 		<code>napi build --platform</code> → <strong>demo.darwin-arm64.node</strong>
 		&nbsp;·&nbsp;
@@ -309,7 +309,7 @@
 			<li><code>#[napi(object)]</code> structs → plain JS objects, fields auto-camelCased</li>
 		</ul>
 		<ul>
-			<li><code>async fn</code> → <code>Promise</code> (tokio on a worker)</li>
+			<li><code>AsyncTask</code> → <code>Promise</code> (computed on a worker thread)</li>
 			<li><code>Result&lt;T&gt;</code> → JS exceptions</li>
 			<li>The whole crates.io ecosystem: <code>image</code>, <code>pulldown-cmark</code>, …</li>
 		</ul>
@@ -354,7 +354,7 @@
 
 <!-- 8 · async demo -->
 <section class="slide">
-	<h2>async fn → Promise, threads included</h2>
+	<h2>AsyncTask → Promise, threads included</h2>
 	<div class="cols">
 		<div class="card">
 			<p><strong>Blocking</strong> <code>fibonacci(40)</code></p>
@@ -366,7 +366,7 @@
 		</div>
 	</div>
 	<p style="margin-top: 2rem">
-		<code>tokio::task::spawn_blocking</code> compiled to <code>wasm32-wasip1-threads</code>:
+		<code>AsyncTask</code> compiled to <code>wasm32-wasip1-threads</code>:
 		SharedArrayBuffer memory + Web Worker pthreads, wired up by the generated loader.
 	</p>
 </section>

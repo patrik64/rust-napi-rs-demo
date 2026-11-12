@@ -16,7 +16,6 @@ functions, with shared TypeScript definitions.
 ├── native/              # the Rust crate
 │   ├── src/lib.rs       # ← the single source of truth (all demo functions)
 │   ├── Cargo.toml       # napi 3.11 + image + pulldown-cmark
-│   ├── .cargo/config.toml  # --cfg tokio_unstable for the wasm target
 │   └── package.json     # @napi-rs/cli config; exports "." (native) and "./wasm"
 └── app/                 # SvelteKit (Svelte 5, Vite 8, adapter-node)
     ├── src/routes/api/  # server endpoints calling the native addon
@@ -45,8 +44,8 @@ Production: `pnpm build && pnpm preview` (serves via `app/server.mjs`).
 
 1. **Overview** — `greet()` runs twice: once natively during SSR, once as WASM
    after hydration. Then the event-loop demo: blocking `fibonacci(40)` freezes
-   a rAF-driven dot; `await fibonacciAsync(40)` (Rust `async fn` → JS Promise,
-   tokio on a worker thread) keeps it moving.
+   a rAF-driven dot; `await fibonacciAsync(40)` (Rust `AsyncTask` → JS Promise,
+   computed on a worker thread) keeps it moving.
 2. **Benchmark** — the same naive fibonacci in 4 engines: browser JS, browser
    WASM, server JS, server native. Typical result on an M-series MacBook at
    n = 35: JS ~60 ms, WASM ~32 ms, native ~25 ms.
@@ -56,7 +55,7 @@ Production: `pnpm build && pnpm preview` (serves via `app/server.mjs`).
    struct returned as a plain JS object, re-run on every keystroke.
 
 Feature checklist covered by `lib.rs`: strings, numbers, `Uint8Array` buffers,
-`#[napi(object)]` structs (camelCase conversion), `async fn` → Promise,
+`#[napi(object)]` structs (camelCase conversion), `AsyncTask` → Promise,
 `Result` → JS exceptions, crates.io reuse.
 
 ## How the two builds are wired
@@ -105,10 +104,6 @@ Symptoms of mixing generations: `emnapi version mismatch`, linker errors
 `symbol exported via --export not found: emnapi_create_env`, or runtime
 `Package subpath './plugins' is not defined`. Once emnapi v2 is stable, moving
 *everything* to the new line should undo all pins.
-
-`native/.cargo/config.toml` additionally sets `--cfg tokio_unstable` for
-`wasm32-wasip1-threads` — without it napi's async support rejects at runtime
-with "Built-in Tokio async tasks require a threaded WASI target".
 
 ## Regenerating from scratch
 

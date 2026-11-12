@@ -91,10 +91,10 @@
 </section>
 
 <section class="card eventloop">
-	<h2>async fn → Promise</h2>
+	<h2>AsyncTask → Promise</h2>
 	<p>
-		A Rust <code>async fn</code> becomes a JavaScript <code>Promise</code>. With the threaded WASM
-		build, the work runs off the main thread — watch the dot: it is moved by
+		A Rust <code>AsyncTask</code> becomes a JavaScript <code>Promise</code>. Its work runs on a
+		worker thread — in the threaded WASM build, a Web Worker — so watch the dot: it is moved by
 		<code>requestAnimationFrame</code>, so it freezes whenever the main thread is blocked.
 	</p>
 	<div class="track" aria-hidden="true">
@@ -126,7 +126,7 @@ pub fn greet(name: String) -> String {
 pub fn fibonacci(n: u32) -> u32 { /* … */ }
 
 #[napi]
-pub async fn fibonacci_async(n: u32) -> Result<u32> { /* … */ }`}</pre>
+pub fn fibonacci_async(n: u32) -> AsyncTask<FibonacciTask> { /* … */ }`}</pre>
 		<p class="muted">
 			<code>napi build --platform</code> → <code>demo.darwin-arm64.node</code> ·
 			<code>napi build --target wasm32-wasip1-threads</code> → <code>demo.wasm32-wasi.wasm</code>
